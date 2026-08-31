@@ -4,6 +4,9 @@ import sympl
 from ._components import (
     BergerSolarInsolation,
     BucketHydrology,
+    CorkLongwaveRadiation,
+    CorkShortwaveRadiation,
+    DataOcean,
     DcmipInitialConditions,
     DryConvectiveAdjustment,
     EmanuelConvection,
@@ -14,14 +17,19 @@ from ._components import (
     HeldSuarez,
     IceSheet,
     Instellation,
+    LandIce,
+    LandMask,
     RRTMGLongwave,
     RRTMGShortwave,
-    SocratesLongwave,
-    SocratesShortwave,
+    SeaIce,
+    SecondBEST,
+    SimpleBoundaryLayer,
     SimplePhysics,
     SlabSurface,
-    SimCloud, 
-    SimCloudCondensation
+    SimCloud,
+    SimCloudCondensation,
+    SocratesLongwave,
+    SocratesShortwave,
 )
 from ._core import (
     ConstantNotFoundError,
@@ -45,6 +53,8 @@ from ._core import (
 
 
 sympl.set_constant("top_of_model_pressure", 20.0, "Pa")
+sympl.set_constant("von_karman_constant", 0.4, "dimensionless")
+sympl.set_constant("heat_capacity_of_sea_water", 3985.0, "J/kg/degK")
 
 __all__ = (
     get_default_state,
@@ -73,6 +83,8 @@ __all__ = (
     SimplePhysics,
     RRTMGLongwave,
     RRTMGShortwave,
+    CorkLongwaveRadiation,
+    CorkShortwaveRadiation,
     SocratesLongwave,
     SocratesShortwave,
     EmanuelConvection,
@@ -81,10 +93,26 @@ __all__ = (
     DcmipInitialConditions,
     IceSheet,
     Instellation,
+    LandMask,
     DryConvectiveAdjustment,
     BucketHydrology,
-    SimCloud, 
-    SimCloudCondensation
+    SecondBEST,
+    SeaIce,
+    LandIce,
+    DataOcean,
+    SimpleBoundaryLayer,
+    SimCloud,
+    SimCloudCondensation,
 )
 
-__version__ = "0.20.0"
+
+def has_fortran_extensions():
+    """Return True if compiled Fortran extensions are available."""
+    try:
+        from climt._components.simple_physics import _simple_physics  # noqa: F401
+        return True
+    except ImportError:
+        return False
+
+
+__version__ = "0.31.0"
